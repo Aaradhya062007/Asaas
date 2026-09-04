@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="card bg-dark text-light border-info p-4">
+        <h3>E-Ticket: {{ booking.booking_id }}</h3>
+        <p>Movie: {{ booking.show_schedule.movie.title }}</p>
+        <p>Theater: {{ booking.show_schedule.screen.theater.name }}</p>
+        <a href="{% url 'bookings:download_ticket_pdf' booking.booking_id %}" class="btn btn-info">Download PDF Ticket</a>
+    </div>
+</div>
+{% endblock %}

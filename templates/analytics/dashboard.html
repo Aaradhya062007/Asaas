@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Analytics Dashboard - BookMySeat{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+
+    <!-- Admin Credentials Evaluation Header -->
+    <div class="bg-gradient-to-r from-red-50 via-white to-red-50 p-6 rounded-3xl border border-red-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-red-600/10 text-red-700 border border-red-200">
+                <i class="fa-solid fa-user-shield mr-1 text-red-600"></i> Authorized Admin Credentials Report
+            </span>
+            <h1 class="font-heading text-2xl font-extrabold text-zinc-900">Business Intelligence & Executive Dashboard</h1>
+            <p class="text-xs text-zinc-600">
+                Admin Panel Access & Login: <span class="font-mono bg-white px-2 py-0.5 rounded text-zinc-900 border border-zinc-300">admin / admin123</span> &bull; Full ORM Optimized Aggregations
+            </p>
+        </div>
+
+        <a href="{% url 'analytics:export_csv' %}?start_date={{ start_date|date:'Y-m-d' }}&end_date={{ end_date|date:'Y-m-d' }}" class="btn-gradient px-6 py-3 rounded-2xl font-bold text-white text-xs shadow-lg inline-flex items-center gap-2">
+            <i class="fa-solid fa-file-csv text-white text-lg"></i> Export CSV Analytics Report
+        </a>
+    </div>
+
+    <!-- Date Range Filter Form -->
+    <div class="glass-card rounded-2xl p-6 border border-zinc-200 shadow-sm">
+        <form method="GET" action="{% url 'analytics:dashboard' %}" class="flex flex-wrap items-end gap-4">
+            <div>
+                <label class="block text-xs font-semibold text-zinc-700 mb-1">Start Date</label>
+                <input type="date" name="start_date" value="{{ start_date|date:'Y-m-d' }}" class="bg-white border border-zinc-300 rounded-xl px-4 py-2 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-zinc-700 mb-1">End Date</label>
+                <input type="date" name="end_date" value="{{ end_date|date:'Y-m-d' }}" class="bg-white border border-zinc-300 rounded-xl px-4 py-2 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
+            </div>
+
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 font-bold text-white text-xs transition-colors shadow-md">
+                Apply Custom Date Filter
+            </button>
+        </form>
+    </div>
+
+    <!-- Revenue Breakdown Cards (Daily, Weekly, Monthly, Yearly) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        
+        <div class="glass-card p-5 rounded-2xl border border-red-300 bg-red-50/40 shadow-sm">
+            <span class="text-xs font-semibold text-zinc-600 block mb-1">Filtered Period Revenue</span>
+            <span class="font-heading font-extrabold text-2xl text-red-600">₹{{ revenue.total }}</span>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl border border-zinc-200 shadow-sm">
+            <span class="text-xs font-semibold text-zinc-600 block mb-1">Today's Revenue</span>
+            <span class="font-heading font-extrabold text-2xl text-zinc-900">₹{{ revenue.daily }}</span>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl border border-zinc-200 shadow-sm">
+            <span class="text-xs font-semibold text-zinc-600 block mb-1">Weekly Revenue</span>
+            <span class="font-heading font-extrabold text-2xl text-zinc-900">₹{{ revenue.weekly }}</span>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl border border-zinc-200 shadow-sm">
+            <span class="text-xs font-semibold text-zinc-600 block mb-1">Monthly Revenue</span>
+            <span class="font-heading font-extrabold text-2xl text-zinc-900">₹{{ revenue.monthly }}</span>
+        </div>
+
+        <div class="glass-card p-5 rounded-2xl border border-zinc-200 shadow-sm">
+            <span class="text-xs font-semibold text-zinc-600 block mb-1">Yearly Revenue</span>
+            <span class="font-heading font-extrabold text-2xl text-zinc-900">₹{{ revenue.yearly }}</span>
+        </div>
+
+    </div>
+
+    <!-- Main Analytics Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+        <!-- Most Booked Movies -->
+        <div class="glass-card rounded-3xl p-6 border border-zinc-200 shadow-sm space-y-4">
+            <h3 class="font-heading font-bold text-zinc-900 text-lg flex items-center gap-2 border-b border-zinc-200 pb-3">
+                <i class="fa-solid fa-trophy text-red-600"></i> Top Performing Movies
+            </h3>
+            <div class="space-y-3">
+                {% for m in most_booked_movies %}
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-red-50/40 border border-red-200 text-xs shadow-sm">
+                        <div>
+                            <span class="font-bold text-zinc-900 text-sm block">{{ m.title }}</span>
+                            <span class="text-zinc-600">{{ m.total_bookings }} Confirmed Bookings &bull; {{ m.total_seats_sold }} Seats Sold</span>
+                        </div>
+                        <span class="font-extrabold text-red-600 text-sm">₹{{ m.total_revenue|default:0.0 }}</span>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-zinc-500 italic">No movie bookings logged for this range.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Theater Occupancy Percentage -->
+        <div class="glass-card rounded-3xl p-6 border border-zinc-200 shadow-sm space-y-4">
+            <h3 class="font-heading font-bold text-zinc-900 text-lg flex items-center gap-2 border-b border-zinc-200 pb-3">
+                <i class="fa-solid fa-building text-red-600"></i> Theater Occupancy & Revenue
+            </h3>
+            <div class="space-y-3">
+                {% for t in theater_occupancy %}
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs font-bold text-zinc-900">
+                            <span>{{ t.name }} ({{ t.city }})</span>
+                            <span class="text-red-600">{{ t.occupancy_percentage }}% Occupancy</span>
+                        </div>
+                        <div class="w-full h-2 rounded-full bg-zinc-200 overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-red-600 to-red-500 rounded-full" style="width: {{ t.occupancy_percentage }}%;"></div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-zinc-500 italic">No theater stats available.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Cancellation & Refund Statistics -->
+        <div class="glass-card rounded-3xl p-6 border border-zinc-200 shadow-sm space-y-4">
+            <h3 class="font-heading font-bold text-zinc-900 text-lg flex items-center gap-2 border-b border-zinc-200 pb-3">
+                <i class="fa-solid fa-chart-pie text-red-600"></i> Cancellation & Refund Stats
+            </h3>
+            <div class="grid grid-cols-2 gap-4 text-xs">
+                <div class="bg-red-50/40 p-4 rounded-xl border border-red-200 shadow-sm">
+                    <span class="text-zinc-600 block">Total Attempts</span>
+                    <span class="text-xl font-bold text-zinc-900">{{ cancellation_stats.total_bookings }}</span>
+                </div>
+                <div class="bg-red-50/40 p-4 rounded-xl border border-red-200 shadow-sm">
+                    <span class="text-zinc-600 block">Successful Paid</span>
+                    <span class="text-xl font-bold text-zinc-900">{{ cancellation_stats.success }}</span>
+                </div>
+                <div class="bg-red-50/40 p-4 rounded-xl border border-red-200 shadow-sm">
+                    <span class="text-zinc-600 block">Failed / Cancelled</span>
+                    <span class="text-xl font-bold text-red-600">{{ cancellation_stats.failed|add:cancellation_stats.cancelled }}</span>
+                </div>
+                <div class="bg-red-50/40 p-4 rounded-xl border border-red-200 shadow-sm">
+                    <span class="text-zinc-600 block">Failure Rate</span>
+                    <span class="text-xl font-bold text-red-600">{{ cancellation_stats.cancellation_rate }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Peak Booking Hours -->
+        <div class="glass-card rounded-3xl p-6 border border-zinc-200 shadow-sm space-y-4">
+            <h3 class="font-heading font-bold text-zinc-900 text-lg flex items-center gap-2 border-b border-zinc-200 pb-3">
+                <i class="fa-solid fa-clock text-red-600"></i> Peak Booking Hours
+            </h3>
+            <div class="space-y-2">
+                {% for ph in peak_hours %}
+                    <div class="flex items-center justify-between text-xs p-2.5 rounded-xl bg-red-50/40 border border-red-200 shadow-sm">
+                        <span class="text-zinc-800 font-bold"><i class="fa-regular fa-clock text-red-600 mr-2"></i> {{ ph.hour }}:00 Hours</span>
+                        <span class="font-bold text-red-600">{{ ph.booking_count }} Bookings</span>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-zinc-500 italic">No peak hour data available.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
