@@ -3,6 +3,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 
 from bookings.models import Booking
 from movies.recommendations import get_recommended_for_user
@@ -56,6 +59,31 @@ def logout_view(request):
     return redirect('movies:list')
 
 
+def forgot_username_view(request):
+    """Handles sending username reminder emails."""
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        if email:
+            users = User.objects.filter(email__iexact=email, is_active=True)
+            if users.exists():
+                usernames = ", ".join([u.username for u in users])
+                subject = "Your BookMySeat Username Reminder"
+                message = f"Hello,\n\nWe received a request to retrieve your BookMySeat username.\n\nYour username(s) associated with this email address: {usernames}\n\nThank you,\nBookMySeat Team"
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=True,
+                )
+            messages.success(request, f"If an account with {email} exists, an email with your username has been sent!")
+            return redirect('accounts:login')
+        else:
+            messages.error(request, "Please enter a valid email address.")
+
+    return render(request, 'accounts/forgot_username.html')
+
+
 @login_required
 def profile_view(request):
     """
@@ -90,3 +118,4 @@ def profile_view(request):
         'recommended_movies': recommended_movies,
     }
     return render(request, 'accounts/profile.html', context)
+

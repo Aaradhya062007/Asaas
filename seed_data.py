@@ -220,7 +220,8 @@ movies_data = [
 ]
 
 # Create Admin Superuser Aaradhya
-admin_aaradhya, _ = User.objects.get_or_create(username="Aaradhya", defaults={'email': "aaradhya@example.com", 'is_staff': True, 'is_superuser': True})
+admin_aaradhya, _ = User.objects.get_or_create(username="Aaradhya", defaults={'email': "aaradhya@example.com"})
+admin_aaradhya.email = "aaradhya@example.com"
 admin_aaradhya.set_password("Aaradhya123")
 admin_aaradhya.is_staff = True
 admin_aaradhya.is_superuser = True
@@ -228,13 +229,13 @@ admin_aaradhya.save()
 
 # Create 4 Demo User Profiles to generate authentic reviews
 users_data = [
-    ("Aaradhya", "aaradhya@example.com"),
     ("cinema_fan", "fan@example.com"),
     ("movie_critic", "critic@example.com"),
-    ("bollywood_buff", "buff@example.com")
+    ("bollywood_buff", "buff@example.com"),
+    ("movie_lover", "lover@example.com")
 ]
 
-user_objs = []
+user_objs = [admin_aaradhya]
 for uname, uemail in users_data:
     u, _ = User.objects.get_or_create(username=uname, defaults={'email': uemail})
     u.set_password("password123")
