@@ -221,7 +221,7 @@ movies_data = [
 
 # Create Admin Superuser Aaradhya
 admin_aaradhya, _ = User.objects.get_or_create(username="Aaradhya", defaults={'email': "aaradhya@example.com", 'is_staff': True, 'is_superuser': True})
-admin_aaradhya.set_password("aaradhya123")
+admin_aaradhya.set_password("Aaradhya123")
 admin_aaradhya.is_staff = True
 admin_aaradhya.is_superuser = True
 admin_aaradhya.save()
