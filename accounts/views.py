@@ -59,9 +59,21 @@ def logout_view(request):
 @login_required
 def profile_view(request):
     """
-    User Profile Dashboard with complete Payment & Booking history,
-    PDF ticket download options, and personalized recommendations.
+    User Profile Dashboard with username/email update form,
+    complete Booking history, and PDF ticket download options.
     """
+    if request.method == 'POST':
+        new_username = request.POST.get('username', '').strip()
+        new_email = request.POST.get('email', '').strip()
+        
+        if new_username:
+            request.user.username = new_username
+        if new_email:
+            request.user.email = new_email
+        request.user.save()
+        messages.success(request, "Profile details updated successfully!")
+        return redirect('accounts:profile')
+
     user_bookings = Booking.objects.filter(
         user=request.user
     ).select_related(
