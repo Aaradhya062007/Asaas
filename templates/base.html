@@ -27,7 +27,8 @@
                             600: '#b91c1c',
                             700: '#991b1b',
                             accent: '#ef4444'
-                        }
+                        },
+                        navdark: '#333545'
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -51,18 +52,6 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid #fee2e2;
             box-shadow: 0 4px 20px -2px rgba(220, 38, 38, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-        }
-
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(220, 38, 38, 0.2);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #09090b 0%, #dc2626 50%, #b91c1c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .btn-gradient {
@@ -95,59 +84,41 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-red-600 selection:text-white bg-white text-zinc-900">
+<body class="min-h-screen flex flex-col antialiased bg-white text-zinc-900">
 
-    <!-- Top Navigation Bar -->
-    <nav class="sticky top-0 z-50 glass-nav transition-all border-b border-red-200">
+    <!-- Top Dark Navigation Bar matching reference layout -->
+    <nav class="bg-[#333545] text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-16">
                 
-                <!-- Logo -->
-                <a href="{% url 'movies:list' %}" class="flex items-center gap-3 group">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-red-700 via-red-600 to-red-500 flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-film text-white text-xl"></i>
+                <!-- Logo with red badge -->
+                <a href="{% url 'movies:list' %}" class="flex items-center gap-2.5 group">
+                    <div class="w-8 h-8 rounded bg-red-600 flex items-center justify-center font-black text-white text-sm tracking-tighter shadow-sm">
+                        my
                     </div>
-                    <span class="font-heading font-extrabold text-2xl tracking-tight text-zinc-900">
-                        BookMy<span class="text-red-600">Seat</span>
+                    <span class="font-heading font-extrabold text-xl tracking-tight text-white">
+                        BookMySeat
                     </span>
                 </a>
 
-                <!-- Nav Links -->
-                <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a href="{% url 'movies:list' %}" class="text-zinc-700 hover:text-red-600 transition-colors flex items-center gap-2">
-                        <i class="fa-solid fa-compass text-red-600"></i> Explore Movies
-                    </a>
+                <!-- Right Action Links -->
+                <div class="flex items-center space-x-6 text-xs font-semibold text-gray-200">
+                    <a href="{% url 'movies:list' %}" class="hover:text-white transition-colors">Explore Movies</a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'accounts:profile' %}" class="text-zinc-700 hover:text-red-600 transition-colors flex items-center gap-2">
-                            <i class="fa-solid fa-ticket text-red-600"></i> My Bookings
-                        </a>
+                        <a href="{% url 'accounts:profile' %}" class="hover:text-white transition-colors">My Bookings</a>
                         {% if user.is_staff %}
-                            <a href="{% url 'analytics:dashboard' %}" class="text-red-700 hover:text-red-800 transition-colors flex items-center gap-2 bg-red-50 px-3 py-1.5 rounded-lg border border-red-200">
-                                <i class="fa-solid fa-chart-line text-red-600"></i> Admin Dashboard
+                            <a href="{% url 'analytics:dashboard' %}" class="text-red-400 hover:text-red-300 transition-colors bg-red-950/60 px-2.5 py-1 rounded border border-red-600/40">
+                                Admin Dashboard
                             </a>
                         {% endif %}
-                    {% endif %}
-                </div>
-
-                <!-- Right Actions -->
-                <div class="flex items-center gap-4">
-                    {% if user.is_authenticated %}
-                        <div class="relative group">
-                            <a href="{% url 'accounts:profile' %}" class="flex items-center gap-3 p-1.5 rounded-xl hover:bg-red-50 transition-colors border border-red-200">
-                                <div class="w-9 h-9 rounded-full bg-red-600 flex items-center justify-center text-white font-bold">
-                                    {{ user.username|slice:":1"|upper }}
-                                </div>
-                                <span class="hidden sm:block text-sm font-semibold text-zinc-900">{{ user.username }}</span>
-                            </a>
-                        </div>
-                        <a href="{% url 'accounts:logout' %}" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-50 text-red-700 border border-red-200 hover:bg-red-600 hover:text-white transition-colors">
+                        <span class="text-gray-400">|</span>
+                        <span class="text-white font-bold">{{ user.username }}</span>
+                        <a href="{% url 'accounts:logout' %}" class="text-gray-300 hover:text-red-400 transition-colors">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </a>
                     {% else %}
-                        <a href="{% url 'accounts:login' %}" class="text-sm font-semibold text-zinc-700 hover:text-red-600 px-4 py-2">Log In</a>
-                        <a href="{% url 'accounts:register' %}" class="btn-gradient text-sm font-semibold text-white px-5 py-2.5 rounded-xl shadow-lg shadow-red-600/20">
-                            Sign Up
-                        </a>
+                        <a href="{% url 'accounts:login' %}" class="hover:text-white transition-colors">Login</a>
+                        <a href="{% url 'accounts:register' %}" class="hover:text-white transition-colors">Register</a>
                     {% endif %}
                 </div>
             </div>
@@ -158,12 +129,12 @@
     {% if messages %}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
             {% for message in messages %}
-                <div class="p-4 mb-3 rounded-xl flex items-center justify-between shadow-sm text-sm font-medium border transition-all
+                <div class="p-3.5 mb-3 rounded-xl flex items-center justify-between shadow-sm text-sm font-medium border transition-all
                     {% if message.tags == 'error' %} bg-red-50 border-red-300 text-red-900
                     {% elif message.tags == 'success' %} bg-red-50 border-red-300 text-red-900
                     {% else %} bg-red-50 border-red-200 text-red-900 {% endif %}">
                     <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-circle-info text-red-600 text-lg"></i>
+                        <i class="fa-solid fa-circle-info text-red-600 text-base"></i>
                         <span>{{ message }}</span>
                     </div>
                     <button onclick="this.parentElement.remove()" class="text-zinc-500 hover:text-red-600 ml-4">
@@ -180,18 +151,18 @@
     </main>
 
     <!-- Footer -->
-    <footer class="mt-20 border-t border-red-200 bg-red-50/60 text-zinc-800 py-12 text-sm">
+    <footer class="mt-20 border-t border-red-200 bg-red-50/60 text-zinc-800 py-10 text-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white text-sm font-bold">
-                    <i class="fa-solid fa-film"></i>
+            <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded bg-red-600 flex items-center justify-center text-white text-xs font-bold">
+                    my
                 </div>
-                <span class="font-heading font-bold text-zinc-900 text-lg">BookMy<span class="text-red-600">Seat</span></span>
+                <span class="font-heading font-bold text-zinc-900 text-base">BookMySeat</span>
             </div>
             <p class="text-xs text-zinc-600 text-center md:text-left">
-                &copy; 2026 BookMySeat Inc. All rights reserved. Red & White Pure Light Theme Edition.
+                &copy; 2026 BookMySeat Inc. All rights reserved.
             </p>
-            <div class="flex space-x-6 text-zinc-600 text-lg">
+            <div class="flex space-x-6 text-zinc-600 text-base">
                 <a href="#" class="hover:text-red-600 transition-colors"><i class="fa-brands fa-github"></i></a>
                 <a href="#" class="hover:text-red-600 transition-colors"><i class="fa-brands fa-twitter"></i></a>
                 <a href="#" class="hover:text-red-600 transition-colors"><i class="fa-brands fa-linkedin"></i></a>

@@ -1,412 +1,229 @@
 {% extends 'base.html' %}
 
-{% block title %}Discover & Book Movie Tickets - BookMySeat{% endblock %}
+{% block title %}BookMySeat - Discover Movies & Live Events{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-    <!-- Hero Banner -->
-    <div class="relative overflow-hidden rounded-3xl mb-10 bg-gradient-to-r from-red-50 via-white to-red-50 border border-red-200 p-8 sm:p-12 shadow-sm">
-        <div class="relative z-10 max-w-2xl">
-            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-red-600/10 text-red-700 border border-red-300 mb-4">
-                <i class="fa-solid fa-sparkles text-red-600"></i> Smart Filter & Instant Search Active
-            </span>
-            <h1 class="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight text-zinc-900 leading-tight mb-4">
-                Experience Cinema Like <br><span class="gradient-text">Never Before</span>
-            </h1>
-            <p class="text-zinc-600 text-base sm:text-lg mb-8 leading-relaxed">
-                Live seat reservation with 2-minute instant hold, verified viewer reviews, and automated e-tickets.
-            </p>
+    <!-- 1. Hero Event Carousel Banner (Bandland / Music Fest reference style) -->
+    <div class="relative overflow-hidden rounded-2xl shadow-lg border border-red-200 bg-gradient-to-r from-purple-950 via-zinc-950 to-indigo-950 text-white">
+        <div class="relative h-64 sm:h-72 md:h-80 w-full flex items-center justify-between px-6 sm:px-12 bg-cover bg-center" 
+             style="background-image: linear-gradient(to right, rgba(20,20,30,0.92), rgba(20,20,30,0.6)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1200&auto=format&fit=crop&q=80');">
+            
+            <!-- Left Carousel Arrow Button -->
+            <button type="button" class="w-10 h-10 rounded-full bg-black/40 hover:bg-red-600 text-white flex items-center justify-center transition-colors shadow-md z-10">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-            <!-- Search Form -->
-            <form method="GET" action="{% url 'movies:list' %}" id="search-filter-form" class="flex flex-col sm:flex-row gap-3">
-                <div class="relative flex-grow">
-                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"></i>
-                    <input type="text" name="q" value="{{ selected_q }}" placeholder="Search movies by title or keyword..." 
-                        class="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-white border border-zinc-300 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all text-sm shadow-sm">
-                    {% if selected_q %}
-                        <a href="{% url 'movies:list' %}?genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&rating={{ selected_rating }}&sort={{ selected_sort }}" class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-red-600">
-                            <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
+            <!-- Banner Central Content -->
+            <div class="text-center max-w-2xl mx-auto space-y-3 z-10 py-4">
+                <div class="flex items-center justify-center gap-3">
+                    <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-red-600 text-white shadow-md">
+                        SATURDAY, 23 NOV &bull; SUNDAY, 24 NOV
+                    </span>
                 </div>
-                <!-- Preserve existing filters when searching -->
-                {% if selected_genre %}<input type="hidden" name="genre" value="{{ selected_genre }}">{% endif %}
-                {% if selected_language %}<input type="hidden" name="language" value="{{ selected_language }}">{% endif %}
-                {% if selected_city %}<input type="hidden" name="city" value="{{ selected_city }}">{% endif %}
-                {% if selected_theater %}<input type="hidden" name="theater" value="{{ selected_theater }}">{% endif %}
-                {% if selected_rating %}<input type="hidden" name="rating" value="{{ selected_rating }}">{% endif %}
-                {% if selected_age %}<input type="hidden" name="age_rating" value="{{ selected_age }}">{% endif %}
-                {% if selected_sort %}<input type="hidden" name="sort" value="{{ selected_sort }}">{% endif %}
-
-                <button type="submit" class="btn-gradient px-8 py-3.5 rounded-2xl font-semibold text-white text-sm shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass"></i> Search
-                </button>
-            </form>
-        </div>
-
-        <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-red-500/5 rounded-full blur-3xl pointer-events-none"></div>
-    </div>
-
-    <!-- Recommended For You Section -->
-    {% if recommended_movies %}
-    <div class="mb-12">
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles text-red-600"></i> Recommended For You
-                </h2>
-                <p class="text-xs text-zinc-500">Tailored from your booking history and recently viewed movies</p>
+                <h1 class="font-heading text-3xl sm:text-5xl font-black tracking-tight text-white uppercase drop-shadow-md">
+                    BANDLAND <span class="text-red-500">2026</span>
+                </h1>
+                <p class="text-xs sm:text-sm font-semibold text-gray-200 uppercase tracking-wider">
+                    AVENGED SEVENFOLD &bull; BLOODYWOOD &bull; EVERYTHING EVERYTHING &bull; EXTREME &bull; BENGALURU
+                </p>
+                <div class="pt-2">
+                    <a href="#movies-section" class="btn-gradient px-6 py-2.5 rounded-xl font-bold text-xs text-white shadow-lg inline-block">
+                        Explore Showtimes & Book Seats
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {% for movie in recommended_movies %}
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col justify-between shadow-sm">
-                    <div>
-                        <div class="relative aspect-[2/3] overflow-hidden bg-zinc-100">
-                            <img src="{{ movie.poster_image }}" alt="{{ movie.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-red-600 border border-red-200 flex items-center gap-1 shadow-sm">
-                                <i class="fa-solid fa-star"></i> {{ movie.average_rating }}
-                            </div>
-                            <div class="absolute top-3 right-3 bg-zinc-900/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-semibold text-white shadow-sm">
-                                {{ movie.age_rating }}
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="font-heading font-bold text-zinc-900 text-lg group-hover:text-red-600 transition-colors line-clamp-1">
-                                {{ movie.title }}
-                            </h3>
-                            <p class="text-xs text-zinc-500 mt-1 flex items-center gap-2">
-                                <span><i class="fa-regular fa-clock text-red-600"></i> {{ movie.duration_minutes }} mins</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0">
-                        <a href="{% url 'movies:detail' slug=movie.slug %}" class="w-full block text-center py-2.5 rounded-xl bg-zinc-900 hover:bg-red-600 text-white font-medium text-xs transition-colors shadow-sm">
-                            Book Tickets
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
+            <!-- Right Carousel Arrow Button -->
+            <button type="button" class="w-10 h-10 rounded-full bg-black/40 hover:bg-red-600 text-white flex items-center justify-center transition-colors shadow-md z-10">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
         </div>
     </div>
+
+    <!-- 2. Notice / Alert Bar: "Login or Register to continue." -->
+    {% if not user.is_authenticated %}
+        <div class="bg-cyan-50 border border-cyan-200 text-cyan-900 px-5 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-cyan-600 text-base"></i>
+                <span><a href="{% url 'accounts:login' %}" class="underline font-bold text-cyan-950 hover:text-red-600">Login</a> or <a href="{% url 'accounts:register' %}" class="underline font-bold text-cyan-950 hover:text-red-600">Register</a> to continue.</span>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-cyan-600 hover:text-cyan-900 text-xs">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
     {% endif %}
 
-    <!-- Main Discovery Section (Filters + Movies Grid) -->
-    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-
-        <!-- Sidebar Filters -->
-        <div class="lg:col-span-1">
-            <div class="glass-card rounded-2xl p-6 sticky top-28 border border-red-200 shadow-sm space-y-6">
-                <div class="flex items-center justify-between pb-4 border-b border-zinc-200">
-                    <h3 class="font-heading font-bold text-zinc-900 text-lg flex items-center gap-2">
-                        <i class="fa-solid fa-sliders text-red-600"></i> Refine Filters
-                    </h3>
-                    <a href="{% url 'movies:list' %}" class="text-xs font-semibold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-left"></i> Reset All
+    <!-- Search & Quick Filters Bar -->
+    <div id="movies-section" class="glass-card p-5 rounded-2xl border border-red-200 shadow-sm space-y-4">
+        <form method="GET" action="{% url 'movies:list' %}" id="search-filter-form" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            
+            <div class="relative md:col-span-2">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-sm"></i>
+                <input type="text" name="q" value="{{ selected_q }}" placeholder="Search movies by title..." 
+                    class="w-full pl-10 pr-8 py-2.5 rounded-xl bg-white border border-zinc-300 text-zinc-900 text-xs focus:outline-none focus:border-red-600 shadow-sm">
+                {% if selected_q %}
+                    <a href="{% url 'movies:list' %}" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-red-600 text-xs">
+                        <i class="fa-solid fa-xmark"></i>
                     </a>
-                </div>
-
-                <form method="GET" action="{% url 'movies:list' %}" id="filter-sidebar-form">
-                    {% if selected_q %}<input type="hidden" name="q" value="{{ selected_q }}">{% endif %}
-
-                    <!-- Genre Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-masks-theater text-red-600 mr-1"></i> Genre</span>
-                            {% if selected_genre %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="genre" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">All Genres</option>
-                            {% for g in genres %}
-                                <option value="{{ g.slug }}" {% if selected_genre == g.slug %}selected{% endif %}>{{ g.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- Language Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-language text-red-600 mr-1"></i> Language</span>
-                            {% if selected_language %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="language" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">All Languages</option>
-                            {% for l in languages %}
-                                <option value="{{ l.code }}" {% if selected_language == l.code %}selected{% endif %}>{{ l.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- City Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-location-dot text-red-600 mr-1"></i> City</span>
-                            {% if selected_city %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="city" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">All Cities</option>
-                            {% for c in cities %}
-                                <option value="{{ c.id }}" {% if selected_city == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- Theater Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-building text-red-600 mr-1"></i> Cinema Multiplex</span>
-                            {% if selected_theater %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="theater" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">All Theaters</option>
-                            {% for t in theaters %}
-                                <option value="{{ t.id }}" {% if selected_theater == t.id|stringformat:"s" %}selected{% endif %}>{{ t.name }} ({{ t.city.name }})</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- Minimum Rating Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-star text-red-600 mr-1"></i> Minimum Rating</span>
-                            {% if selected_rating %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="rating" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">Any Rating</option>
-                            <option value="4.5" {% if selected_rating == '4.5' %}selected{% endif %}>4.5+ ⭐ Outstanding</option>
-                            <option value="4.0" {% if selected_rating == '4.0' %}selected{% endif %}>4.0+ ⭐ Very Good</option>
-                            <option value="3.0" {% if selected_rating == '3.0' %}selected{% endif %}>3.0+ ⭐ Good</option>
-                        </select>
-                    </div>
-
-                    <!-- Age Rating Certification Filter -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2 flex items-center justify-between">
-                            <span><i class="fa-solid fa-id-badge text-red-600 mr-1"></i> Certification</span>
-                            {% if selected_age %}<span class="text-[10px] text-red-600 font-bold">Active</span>{% endif %}
-                        </label>
-                        <select name="age_rating" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="">All Certifications</option>
-                            <option value="U" {% if selected_age == 'U' %}selected{% endif %}>U (Universal)</option>
-                            <option value="UA" {% if selected_age == 'UA' %}selected{% endif %}>UA (Parental Guidance)</option>
-                            <option value="A" {% if selected_age == 'A' %}selected{% endif %}>A (Adults Only)</option>
-                            <option value="R" {% if selected_age == 'R' %}selected{% endif %}>R (Restricted)</option>
-                        </select>
-                    </div>
-
-                    <!-- Sorting -->
-                    <div class="mb-5">
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-2">
-                            <i class="fa-solid fa-arrow-down-wide-short text-red-600 mr-1"></i> Sort Movies By
-                        </label>
-                        <select name="sort" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3.5 py-2.5 text-sm text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
-                            <option value="popularity" {% if selected_sort == 'popularity' %}selected{% endif %}>Popularity (Most Booked)</option>
-                            <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest Releases</option>
-                            <option value="rating" {% if selected_sort == 'rating' %}selected{% endif %}>Highest Rated ⭐</option>
-                            <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
-                            <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 font-bold text-white text-xs transition-colors shadow-md">
-                        Apply All Filters
-                    </button>
-                </form>
+                {% endif %}
             </div>
+
+            <div>
+                <select name="genre" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
+                    <option value="">All Genres</option>
+                    {% for g in genres %}
+                        <option value="{{ g.slug }}" {% if selected_genre == g.slug %}selected{% endif %}>{{ g.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <select name="language" onchange="this.form.submit()" class="w-full bg-white border border-zinc-300 rounded-xl px-3 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-red-600 shadow-sm">
+                    <option value="">All Languages</option>
+                    {% for l in languages %}
+                        <option value="{{ l.code }}" {% if selected_language == l.code %}selected{% endif %}>{{ l.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- 3. Section Heading: Recommended Movies -->
+    <div class="space-y-6">
+        <div class="border-b border-zinc-300 pb-3">
+            <h2 class="font-heading text-2xl font-bold text-zinc-900">
+                Recommended Movies
+            </h2>
         </div>
 
-        <!-- Movies Grid Area -->
-        <div class="lg:col-span-3 space-y-6">
-
-            <!-- Active Filter Badges / Chips Bar -->
-            {% if selected_q or selected_genre or selected_language or selected_city or selected_theater or selected_rating or selected_age %}
-                <div class="flex flex-wrap items-center gap-2 bg-red-50 p-4 rounded-2xl border border-red-200 shadow-sm">
-                    <span class="text-xs font-bold text-zinc-700 mr-2 flex items-center gap-1">
-                        <i class="fa-solid fa-filter text-red-600"></i> Active Filters:
-                    </span>
-
-                    {% if selected_q %}
-                        <a href="{% url 'movies:list' %}?genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Search: "{{ selected_q }}" <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_genre %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Genre: {{ selected_genre }} <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_language %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&genre={{ selected_genre }}&city={{ selected_city }}&theater={{ selected_theater }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Language: {{ selected_language }} <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_city %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&genre={{ selected_genre }}&language={{ selected_language }}&theater={{ selected_theater }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            City Filter <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_theater %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Theater Filter <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_rating %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Rating: {{ selected_rating }}+ ⭐ <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    {% if selected_age %}
-                        <a href="{% url 'movies:list' %}?q={{ selected_q }}&genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&rating={{ selected_rating }}&sort={{ selected_sort }}" 
-                           class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl text-xs font-bold bg-white text-red-700 border border-red-300 shadow-sm hover:bg-red-600 hover:text-white transition-colors">
-                            Cert: {{ selected_age }} <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-
-                    <a href="{% url 'movies:list' %}" class="ml-auto text-xs font-bold text-red-600 hover:underline">
-                        Clear All
-                    </a>
-                </div>
-            {% endif %}
-
-            <!-- Result Count & Header -->
-            <div class="flex items-center justify-between bg-red-50 p-4 rounded-2xl border border-red-200 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <h2 class="font-heading font-bold text-zinc-900 text-xl">All Movies</h2>
-                    <span id="dynamic-count-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-red-600 text-white shadow-sm">
-                        {{ total_matches }} Movies Found
-                    </span>
-                </div>
-                <span class="text-xs text-zinc-500 font-medium hidden sm:inline">
-                    Showing Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                </span>
-            </div>
-
-            <!-- Movies Grid -->
-            {% if page_obj.object_list %}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {% for movie in page_obj.object_list %}
-                        <div class="glass-card rounded-2xl overflow-hidden group hover:border-red-600 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
-                            <div>
-                                <div class="relative aspect-[2/3] overflow-hidden bg-zinc-100">
-                                    <img src="{{ movie.poster_image }}" alt="{{ movie.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                    
-                                    <!-- Rating Badge -->
-                                    <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-red-600 border border-red-200 flex items-center gap-1.5 shadow-sm">
-                                        <i class="fa-solid fa-star"></i> {{ movie.average_rating }}
-                                    </div>
-
-                                    <!-- Age Rating Badge -->
-                                    <div class="absolute top-3 right-3 bg-zinc-900/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-xs font-bold text-white shadow-sm">
-                                        {{ movie.age_rating }}
-                                    </div>
+        <!-- Movies Grid -->
+        {% if page_obj.object_list %}
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {% for movie in page_obj.object_list %}
+                    <div class="glass-card rounded-2xl overflow-hidden group hover:border-red-600 hover:shadow-xl transition-all duration-300 flex flex-col justify-between border border-zinc-200">
+                        <div>
+                            <div class="relative aspect-[2/3] overflow-hidden bg-zinc-100">
+                                <img src="{{ movie.poster_image }}" alt="{{ movie.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                
+                                <!-- Rating Badge -->
+                                <div class="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-md px-2.5 py-0.5 rounded-lg text-xs font-bold text-red-600 border border-red-200 flex items-center gap-1 shadow-sm">
+                                    <i class="fa-solid fa-star text-[10px]"></i> {{ movie.average_rating }}
                                 </div>
 
-                                <div class="p-5">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        {% for g in movie.genres.all|slice:":2" %}
-                                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-red-100 text-red-700 border border-red-200">
-                                                {{ g.name }}
-                                            </span>
-                                        {% endfor %}
-                                    </div>
-
-                                    <h3 class="font-heading font-bold text-zinc-900 text-xl group-hover:text-red-600 transition-colors line-clamp-1 mb-2">
-                                        {{ movie.title }}
-                                    </h3>
-
-                                    <p class="text-xs text-zinc-600 line-clamp-2 mb-4 leading-relaxed">
-                                        {{ movie.description }}
-                                    </p>
+                                <!-- Age Rating Badge -->
+                                <div class="absolute top-2.5 right-2.5 bg-zinc-900/90 backdrop-blur-md px-2 py-0.5 rounded-lg text-[10px] font-bold text-white shadow-sm">
+                                    {{ movie.age_rating }}
                                 </div>
                             </div>
 
-                            <div class="p-5 pt-0 flex items-center justify-between gap-3 border-t border-zinc-100 mt-2">
-                                <span class="text-xs text-zinc-500">
-                                    <i class="fa-regular fa-clock text-red-600 mr-1"></i> {{ movie.duration_minutes }}m
-                                </span>
-                                <a href="{% url 'movies:detail' slug=movie.slug %}" class="btn-gradient px-4 py-2 rounded-xl text-white font-semibold text-xs shadow-md">
-                                    Book Now
-                                </a>
+                            <div class="p-4">
+                                <h3 class="font-heading font-bold text-zinc-900 text-base group-hover:text-red-600 transition-colors line-clamp-1 mb-1">
+                                    {{ movie.title }}
+                                </h3>
+
+                                <p class="text-[11px] text-zinc-500 line-clamp-1 mb-2">
+                                    {% for g in movie.genres.all %}{{ g.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                                </p>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
 
-                <!-- Pagination -->
-                {% if page_obj.has_other_pages %}
-                    <div class="flex items-center justify-center space-x-2 mt-12">
-                        {% if page_obj.has_previous %}
-                            <a href="?page={{ page_obj.previous_page_number }}&genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&q={{ selected_q }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" class="px-4 py-2 rounded-xl bg-white hover:bg-red-50 text-sm font-medium text-zinc-800 transition-colors border border-zinc-300 shadow-sm">
-                                Previous
+                        <div class="p-4 pt-0">
+                            <a href="{% url 'movies:detail' slug=movie.slug %}" class="btn-gradient w-full block text-center py-2 rounded-xl text-white font-bold text-xs shadow-sm">
+                                Book Tickets
                             </a>
-                        {% endif %}
-
-                        <span class="px-4 py-2 text-sm text-zinc-600">
-                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                        </span>
-
-                        {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}&genre={{ selected_genre }}&language={{ selected_language }}&city={{ selected_city }}&theater={{ selected_theater }}&q={{ selected_q }}&rating={{ selected_rating }}&age_rating={{ selected_age }}&sort={{ selected_sort }}" class="px-4 py-2 rounded-xl bg-white hover:bg-red-50 text-sm font-medium text-zinc-800 transition-colors border border-zinc-300 shadow-sm">
-                                Next
-                            </a>
-                        {% endif %}
+                        </div>
                     </div>
-                {% endif %}
+                {% endfor %}
+            </div>
 
-            {% else %}
-                <div class="glass-card rounded-3xl p-12 text-center">
-                    <i class="fa-solid fa-film text-5xl text-red-600 mb-4"></i>
-                    <h3 class="font-heading font-bold text-2xl text-zinc-900 mb-2">No Movies Found</h3>
-                    <p class="text-zinc-600 text-sm mb-6">No movies match your current search or filter combination.</p>
-                    <a href="{% url 'movies:list' %}" class="btn-gradient px-6 py-2.5 rounded-xl font-semibold text-xs text-white inline-block">
-                        Clear All Filters
-                    </a>
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <div class="flex items-center justify-center space-x-2 pt-4">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}&genre={{ selected_genre }}&language={{ selected_language }}&q={{ selected_q }}" class="px-4 py-2 rounded-xl bg-white hover:bg-red-50 text-xs font-semibold text-zinc-800 transition-colors border border-zinc-300 shadow-sm">
+                            Previous
+                        </a>
+                    {% endif %}
+
+                    <span class="px-4 py-2 text-xs font-semibold text-zinc-600">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}&genre={{ selected_genre }}&language={{ selected_language }}&q={{ selected_q }}" class="px-4 py-2 rounded-xl bg-white hover:bg-red-50 text-xs font-semibold text-zinc-800 transition-colors border border-zinc-300 shadow-sm">
+                            Next
+                        </a>
+                    {% endif %}
                 </div>
             {% endif %}
 
+        {% else %}
+            <div class="glass-card rounded-2xl p-8 text-center text-zinc-500">
+                <i class="fa-solid fa-film text-4xl mb-2 text-red-600"></i>
+                <p class="text-sm font-semibold">No movies found matching criteria.</p>
+                <a href="{% url 'movies:list' %}" class="btn-gradient px-5 py-2 rounded-xl text-xs font-bold text-white inline-block mt-3">Clear Search</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- 4. Section Heading: The Best of Live Events -->
+    <div class="space-y-6 pt-4">
+        <div class="border-b border-zinc-300 pb-3">
+            <h2 class="font-heading text-2xl font-bold text-zinc-900">
+                The Best of Live Events
+            </h2>
         </div>
 
+        <!-- 6 Event Cards Matching reference design -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=80" alt="Event 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 1</h4>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=80" alt="Event 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 2</h4>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=500&auto=format&fit=crop&q=80" alt="Event 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 3</h4>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=500&auto=format&fit=crop&q=80" alt="Event 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 4</h4>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=500&auto=format&fit=crop&q=80" alt="Event 5" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 5</h4>
+            </div>
+
+            <div class="group cursor-pointer">
+                <div class="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm border border-zinc-200 bg-zinc-100 mb-2">
+                    <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=500&auto=format&fit=crop&q=80" alt="Event 6" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <h4 class="font-heading font-bold text-zinc-900 text-sm text-center">Event 6</h4>
+            </div>
+
+        </div>
     </div>
+
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Dynamic Filter Count AJAX polling preview
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('filter-sidebar-form');
-        if (!form) return;
-
-        form.querySelectorAll('select').forEach(select => {
-            select.addEventListener('change', async () => {
-                const formData = new FormData(form);
-                const params = new URLSearchParams(formData);
-                try {
-                    const res = await fetch(`/movies/api/filter-count/?${params.toString()}`);
-                    if (res.ok) {
-                        const data = await res.json();
-                        const badge = document.getElementById('dynamic-count-badge');
-                        if (badge) {
-                            badge.innerText = `${data.count} Movies Found`;
-                        }
-                    }
-                } catch(e) {}
-            });
-        });
-    });
-</script>
 {% endblock %}
