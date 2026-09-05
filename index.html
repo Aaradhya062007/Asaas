@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚨</text></svg>" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="ASAAS - Automated System for Accident Alert & Safety. Smart Vehicle Accident Detection, GPS Live Tracking, Emergency Center, Medical Profiles, Vehicle Document & Service Vault." />
+  <meta name="keywords"
+    content="ASAAS, Accident Detection, System for Accident Alert and Safety, IoT Telemetry, ESP32 Arduino, GPS Tracking, Emergency SOS, Medical Documents, Vehicle Management" />
+  <title>ASAAS | Automated System for Accident Alert & Safety</title>
+</head>
+
+<body>
+  <div id="root">
+    <div style="padding: 40px; color: #38bdf8; font-family: sans-serif; background: #000; min-height: 100vh;">
+      <h2>ASAAS System Initializing...</h2>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 8px;">Loading telemetry engines and safety dashboard modules...</p>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('error', function(e) {
+      var root = document.getElementById('root');
+      if (root) {
+        root.innerHTML = '<div style="padding:40px;color:#ef4444;background:#050505;min-height:100vh;font-family:sans-serif;">' +
+          '<h2>🚨 JavaScript Execution Error</h2>' +
+          '<p style="color:#f8fafc;font-size:1rem;margin-top:10px;">' + (e.message || e) + '</p>' +
+          '<pre style="background:#111;padding:15px;color:#cbd5e1;border-radius:6px;margin-top:10px;">' + (e.filename || '') + ':' + (e.lineno || '') + '</pre>' +
+          '</div>';
+      }
+    });
+  </script>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
