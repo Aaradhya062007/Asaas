@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ movie.poster_image }}" class="img-fluid rounded shadow" alt="{{ movie.title }}">
+        </div>
+        <div class="col-md-8 text-light">
+            <h2>{{ movie.title }} <span class="badge bg-secondary">{{ movie.age_rating }}</span></h2>
+            <p class="text-warning font-weight-bold">Rating: ★ {{ movie.average_rating }} / 5.0 ({{ movie.total_reviews }} reviews)</p>
+            <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
+            <p>{{ movie.description }}</p>
+            
+            {% if movie.youtube_trailer_url %}
+            <div class="ratio ratio-16x9 my-3">
+                <iframe src="{{ movie.embed_youtube_url }}" title="Trailer" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+            
+            <h4 class="mt-4">Available Showtimes</h4>
+            <div class="list-group">
+                {% for sched in schedules %}
+                    <a href="{% url 'bookings:seat_selection' sched.id %}" class="list-group-item list-group-item-action bg-dark text-light border-secondary d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ sched.screen.theater.name }}</strong> ({{ sched.screen.name }})
+                            <br><small class="text-muted">{{ sched.start_time|date:"D, M j, Y @ h:i A" }}</small>
+                        </div>
+                        <span class="btn btn-sm btn-primary">Select Seats</span>
+                    </a>
+                {% empty %}
+                    <p class="text-muted">No upcoming showtimes available.</p>
+                {% endfor %}
+            </div>
+
+            {% include 'movies/review_section.html' %}
+            {% include 'movies/recommendations.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

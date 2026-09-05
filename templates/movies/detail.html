@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ movie.title }} - Movie Details & Ticket Booking{% endblock %}
+
+{% block content %}
+<!-- Movie Backdrop Hero -->
+<div class="relative w-full bg-gradient-to-r from-red-50 via-white to-red-50 py-12 border-b border-red-200 overflow-hidden">
+    <div class="absolute inset-0 bg-cover bg-center opacity-5 filter blur-xl scale-110" style="background-image: url('{{ movie.poster_image }}');"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            
+            <!-- Poster -->
+            <div class="md:col-span-1">
+                <div class="relative aspect-[2/3] rounded-3xl overflow-hidden shadow-xl border border-red-200 group">
+                    <img src="{{ movie.poster_image }}" alt="{{ movie.title }}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-zinc-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <a href="#trailer-section" class="w-16 h-16 rounded-full bg-red-600/90 text-white flex items-center justify-center text-2xl shadow-xl hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-play ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Details Header -->
+            <div class="md:col-span-2 space-y-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <span class="px-3 py-1 rounded-lg text-xs font-extrabold bg-red-600/10 text-red-700 border border-red-200">
+                        {{ movie.age_rating }}
+                    </span>
+                    <span class="text-xs text-zinc-600 font-medium">
+                        <i class="fa-regular fa-clock text-red-600 mr-1"></i> {{ movie.duration_minutes }} Mins
+                    </span>
+                    <span class="text-xs text-zinc-600 font-medium">
+                        <i class="fa-regular fa-calendar text-red-600 mr-1"></i> {{ movie.release_date|date:"M d, Y" }}
+                    </span>
+                </div>
+
+                <h1 class="font-heading text-4xl sm:text-5xl font-extrabold text-zinc-900 leading-tight">
+                    {{ movie.title }}
+                </h1>
+
+                <!-- Genres & Languages -->
+                <div class="flex flex-wrap items-center gap-2">
+                    {% for g in movie.genres.all %}
+                        <span class="px-3 py-1 rounded-xl text-xs font-semibold bg-white text-zinc-800 border border-zinc-200 shadow-sm">
+                            {{ g.name }}
+                        </span>
+                    {% endfor %}
+                    {% for l in movie.languages.all %}
+                        <span class="px-3 py-1 rounded-xl text-xs font-semibold bg-red-50 text-red-700 border border-red-200">
+                            {{ l.name }}
+                        </span>
+                    {% endfor %}
+                </div>
+
+                <!-- Rating Stats -->
+                <div class="flex items-center gap-6 p-4 rounded-2xl bg-white border border-red-200 shadow-sm w-fit">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-star text-red-600 text-2xl"></i>
+                        <div>
+                            <span class="text-2xl font-extrabold text-zinc-900">{{ movie.average_rating }}</span>
+                            <span class="text-xs text-zinc-500">/ 5</span>
+                        </div>
+                    </div>
+                    <div class="h-8 w-px bg-zinc-200"></div>
+                    <div class="text-xs text-zinc-500">
+                        <span class="font-bold text-zinc-900 block text-sm">{{ movie.total_reviews }}</span> Total Reviews
+                    </div>
+                </div>
+
+                <p class="text-zinc-600 text-sm leading-relaxed max-w-2xl">
+                    {{ movie.description }}
+                </p>
+
+                <div class="pt-2">
+                    <a href="#showtimes-section" class="btn-gradient px-8 py-3.5 rounded-2xl font-bold text-white text-sm shadow-xl inline-flex items-center gap-2">
+                        <i class="fa-solid fa-ticket"></i> Select Showtimes & Book Seats
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+    <!-- YouTube Trailer Section -->
+    <div id="trailer-section" class="space-y-4">
+        <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <i class="fa-brands fa-youtube text-red-600"></i> Official Trailer
+        </h2>
+        <div class="relative aspect-video rounded-3xl overflow-hidden border border-zinc-200 shadow-xl bg-zinc-900">
+            {% if movie.embed_youtube_url %}
+                <iframe src="{{ movie.embed_youtube_url }}" title="{{ movie.title }} Trailer" 
+                    class="w-full h-full" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            {% else %}
+                <div class="flex items-center justify-center h-full text-zinc-400">No trailer available</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Additional Poster Gallery Carousel -->
+    {% if posters %}
+    <div class="space-y-4">
+        <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <i class="fa-regular fa-images text-red-600"></i> Movie Gallery
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            {% for poster in posters %}
+                <div class="aspect-[2/3] rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100 group shadow-sm">
+                    <img src="{{ poster.image_url }}" alt="{{ poster.caption|default:movie.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Showtimes & Theater Selection -->
+    <div id="showtimes-section" class="space-y-6">
+        <div class="flex items-center justify-between border-b border-zinc-200 pb-4">
+            <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-red-600"></i> Available Showtimes
+            </h2>
+        </div>
+
+        {% if schedules %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for sched in schedules %}
+                    <div class="glass-card rounded-2xl p-6 border border-zinc-200 flex flex-col justify-between hover:border-red-600 transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-xs font-bold text-zinc-900 uppercase tracking-wider">
+                                    {{ sched.screen.name }}
+                                </span>
+                                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-red-100 text-red-700 border border-red-200">
+                                    {{ sched.price_multiplier }}x Rate
+                                </span>
+                            </div>
+                            <h3 class="font-heading font-bold text-zinc-900 text-lg mb-1">
+                                {{ sched.screen.theater.name }}
+                            </h3>
+                            <p class="text-xs text-zinc-500 mb-4 flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-red-600"></i> {{ sched.screen.theater.city.name }}, {{ sched.screen.theater.address }}
+                            </p>
+                            <div class="bg-red-50/50 rounded-xl p-3 border border-red-200 mb-6 flex items-center justify-between">
+                                <span class="text-xs text-zinc-500">Showtime:</span>
+                                <span class="text-sm font-bold text-zinc-900">{{ sched.start_time|date:"b d, Y @ P" }}</span>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'bookings:seat_selection' schedule_id=sched.id %}" class="btn-gradient w-full py-3 rounded-xl font-bold text-white text-xs text-center shadow-lg block">
+                            Select Seats & Reserve
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="glass-card rounded-2xl p-8 text-center text-zinc-500">
+                <i class="fa-solid fa-calendar-xmark text-4xl mb-3 text-red-600"></i>
+                <p>No active upcoming showtimes scheduled for this movie currently.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Reviews & Verified Viewers Section -->
+    <div class="space-y-8">
+        <div class="flex items-center justify-between border-b border-zinc-200 pb-4">
+            <div>
+                <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-red-600"></i> Viewer Reviews
+                </h2>
+                <p class="text-xs text-zinc-500">Only verified users who booked tickets can post reviews</p>
+            </div>
+        </div>
+
+        <!-- Submit Review Box (If Verified Viewer) -->
+        {% if user.is_authenticated %}
+            {% if is_verified_viewer %}
+                <div class="glass-card rounded-3xl p-6 border border-red-200 bg-red-50/30">
+                    <h3 class="font-heading font-bold text-zinc-900 text-lg mb-2">
+                        {% if existing_review %}Edit Your Verified Review{% else %}Write a Verified Viewer Review{% endif %}
+                    </h3>
+                    <form method="POST" action="{% url 'movies:submit_review' movie_id=movie.id %}" class="space-y-4">
+                        {% csrf_token %}
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-700 mb-2">Rating (1 to 5 Stars)</label>
+                            <select name="rating" class="bg-white border border-zinc-300 rounded-xl px-4 py-2 text-sm text-red-600 font-bold focus:outline-none shadow-sm">
+                                <option value="5" {% if existing_review.rating == 5 %}selected{% endif %}>⭐⭐⭐⭐⭐ 5 - Exceptional</option>
+                                <option value="4" {% if existing_review.rating == 4 %}selected{% endif %}>⭐⭐⭐⭐ 4 - Great</option>
+                                <option value="3" {% if existing_review.rating == 3 %}selected{% endif %}>⭐⭐⭐ 3 - Average</option>
+                                <option value="2" {% if existing_review.rating == 2 %}selected{% endif %}>⭐⭐ 2 - Poor</option>
+                                <option value="1" {% if existing_review.rating == 1 %}selected{% endif %}>⭐ 1 - Terrible</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea name="review_text" rows="3" required placeholder="Share your movie experience..."
+                                class="w-full bg-white border border-zinc-300 rounded-xl p-4 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-red-600 shadow-sm">{% if existing_review %}{{ existing_review.review_text }}{% endif %}</textarea>
+                        </div>
+                        <button type="submit" class="btn-gradient px-6 py-2.5 rounded-xl text-xs font-bold text-white shadow-lg">
+                            {% if existing_review %}Update Review{% else %}Publish Review{% endif %}
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="bg-red-50/60 rounded-2xl p-4 border border-red-200 flex items-center gap-3 text-xs text-zinc-600">
+                    <i class="fa-solid fa-shield-halved text-red-600 text-lg"></i>
+                    <span>Verified Badge Info: Booking and watching a show for this movie will unlock review submission privileges for your account.</span>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Reviews List -->
+        <div class="space-y-4">
+            {% for review in reviews %}
+                <div class="glass-card rounded-2xl p-6 border border-zinc-200 shadow-sm">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold text-white shadow-sm">
+                                {{ review.user.username|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-zinc-900 text-sm">{{ review.user.username }}</span>
+                                    {% if review.is_verified_viewer %}
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-red-100 text-red-700 border border-red-200 flex items-center gap-1">
+                                            <i class="fa-solid fa-circle-check text-red-600"></i> Verified Viewer
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <span class="text-[11px] text-zinc-500">{{ review.created_at|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Rating Stars -->
+                        <div class="flex items-center text-red-600 text-xs">
+                            <i class="fa-solid fa-star mr-1"></i> <span class="font-bold text-zinc-900 text-sm">{{ review.rating }}/5</span>
+                        </div>
+                    </div>
+
+                    <p class="text-zinc-600 text-sm leading-relaxed mb-4">
+                        {{ review.review_text }}
+                    </p>
+
+                    <!-- Flag Report Action -->
+                    {% if user.is_authenticated and review.user != user %}
+                        <form method="POST" action="{% url 'movies:report_review' review_id=review.id %}" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="flag_reason" value="Inappropriate content report">
+                            <button type="submit" class="text-[11px] text-zinc-400 hover:text-red-600 transition-colors flex items-center gap-1">
+                                <i class="fa-solid fa-flag"></i> Report Inappropriate Content
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="text-zinc-500 text-sm italic">No reviews published yet for this movie.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Similar Movies Showcase -->
+    {% if similar_movies %}
+    <div class="space-y-6 pt-6 border-t border-zinc-200">
+        <h2 class="font-heading text-2xl font-bold text-zinc-900 flex items-center gap-2">
+            <i class="fa-solid fa-film text-red-600"></i> Similar Movies You Might Like
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {% for sim in similar_movies %}
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-red-600 transition-all duration-300">
+                    <div class="aspect-[2/3] overflow-hidden bg-zinc-100 relative">
+                        <img src="{{ sim.poster_image }}" alt="{{ sim.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-heading font-bold text-zinc-900 text-base line-clamp-1 mb-1">{{ sim.title }}</h4>
+                        <span class="text-xs text-red-600 font-bold"><i class="fa-solid fa-star"></i> {{ sim.average_rating }}</span>
+                    </div>
+                    <div class="p-4 pt-0">
+                        <a href="{% url 'movies:detail' slug=sim.slug %}" class="w-full block text-center py-2 rounded-xl bg-zinc-900 hover:bg-red-600 text-white font-medium text-xs transition-colors">
+                            View Movie
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+<div class="card bg-dark border-secondary p-3">
+    <h4>Cancellation & Refund Statistics</h4>
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <p><strong>Total Attempts:</strong> {{ cancellation_stats.total_bookings }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Successful:</strong> {{ cancellation_stats.success }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Failed / Cancelled:</strong> {{ cancellation_stats.failed }} / {{ cancellation_stats.cancelled }}</p>
+        </div>
+        <div class="col-md-3">
+            <p><strong>Cancellation Rate:</strong> <span class="badge bg-warning">{{ cancellation_stats.cancellation_rate }}%</span></p>
+        </div>
+    </div>
+</div>

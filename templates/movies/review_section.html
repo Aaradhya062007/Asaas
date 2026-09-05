@@ -1,0 +1,45 @@
+<div class="mt-5">
+    <h4>Audience Reviews & Ratings</h4>
+    {% if user.is_authenticated and is_verified_viewer %}
+    <div class="card bg-dark border-secondary p-3 mb-4">
+        <h5>{% if existing_review %}Edit Your Review{% else %}Leave a Verified Review{% endif %}</h5>
+        <form method="post" action="{% url 'movies:submit_review' movie.id %}">
+            {% csrf_token %}
+            <div class="mb-2">
+                <label>Rating:</label>
+                <select name="rating" class="form-select bg-secondary text-light w-auto d-inline-block ms-2">
+                    <option value="5" {% if existing_review and existing_review.rating == 5 %}selected{% endif %}>5 Stars</option>
+                    <option value="4" {% if existing_review and existing_review.rating == 4 %}selected{% endif %}>4 Stars</option>
+                    <option value="3" {% if existing_review and existing_review.rating == 3 %}selected{% endif %}>3 Stars</option>
+                    <option value="2" {% if existing_review and existing_review.rating == 2 %}selected{% endif %}>2 Stars</option>
+                    <option value="1" {% if existing_review and existing_review.rating == 1 %}selected{% endif %}>1 Star</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <textarea name="review_text" class="form-control bg-secondary text-light" rows="3" required>{% if existing_review %}{{ existing_review.review_text }}{% endif %}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success btn-sm">Submit Review</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="list-group">
+        {% for r in reviews %}
+        <div class="list-group-item bg-dark text-light border-secondary">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ r.user.username }}</strong>
+                    {% if r.is_verified_viewer %}
+                    <span class="badge bg-success ms-2">✓ Verified Viewer</span>
+                    {% endif %}
+                </div>
+                <span class="text-warning">★ {{ r.rating }} / 5</span>
+            </div>
+            <p class="mt-2 mb-1">{{ r.review_text }}</p>
+            <small class="text-muted">{{ r.created_at|date:"M j, Y" }}</small>
+        </div>
+        {% empty %}
+        <p class="text-muted">No reviews yet.</p>
+        {% endfor %}
+    </div>
+</div>

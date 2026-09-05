@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="text-light mb-4">Available Showtimes</h2>
+    <div class="list-group">
+        {% for schedule in schedules %}
+        <a href="{% url 'bookings:seat_selection' schedule.id %}" class="list-group-item list-group-item-action bg-dark text-light border-secondary">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ schedule.movie.title }}</h5>
+                <small>{{ schedule.start_time|date:"D, M j, Y @ h:i A" }}</small>
+            </div>
+            <p class="mb-1">{{ schedule.screen.theater.name }} - {{ schedule.screen.name }}</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
