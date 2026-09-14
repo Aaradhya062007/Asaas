@@ -85,7 +85,7 @@ export const defaultTelemetryState = {
   accelX: 0.12, // g
   accelY: 0.08, // g
   accelZ: 0.98, // g
-  totalGForce: 0.99,
+  totalGForce: 6.3,
   pitchDeg: 2.1,
   rollDeg: -1.4,
   lat: 28.4595,

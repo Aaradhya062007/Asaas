@@ -55,7 +55,7 @@ export default function DashboardTab({
       accelX: 0.05,
       accelY: 0.08,
       accelZ: 0.98,
-      totalGForce: 0.99,
+      totalGForce: 6.3,
       pitchDeg: 1.2,
       rollDeg: 0.8,
       isEmergencyAlert: false,

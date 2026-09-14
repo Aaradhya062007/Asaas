@@ -21,7 +21,7 @@ export default function Esp32ApiHubTab({ updateTelemetry, triggerEmergency }) {
     accel_x_g: 5.84,
     accel_y_g: 2.10,
     accel_z_g: 1.45,
-    total_g: 6.22,
+    total_g: 6.3,
     pitch_deg: 14.5,
     roll_deg: 48.2,
     gps: {
