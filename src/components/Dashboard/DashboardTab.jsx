@@ -52,9 +52,9 @@ export default function DashboardTab({
   const triggerNormalDriving = () => {
     updateTelemetry({
       speedKmh: 45.2,
-      accelX: 0.05,
-      accelY: 0.08,
-      accelZ: 0.98,
+      accelX: 5.84,
+      accelY: 2.10,
+      accelZ: 1.45,
       totalGForce: 6.3,
       pitchDeg: 1.2,
       rollDeg: 0.8,
