@@ -52,9 +52,9 @@ export default function DashboardTab({
   const triggerNormalDriving = () => {
     updateTelemetry({
       speedKmh: 45.2,
-      accelX: 6.3,
-      accelY: 2.10,
-      accelZ: 1.45,
+      accelX: 0.12,
+      accelY: 0.08,
+      accelZ: 0.98,
       totalGForce: 6.3,
       pitchDeg: 1.2,
       rollDeg: 0.8,
@@ -243,7 +243,7 @@ export default function DashboardTab({
               {telemetry.totalGForce === 6.3 ? '6.3' : telemetry.totalGForce.toFixed(2)}<span style={{ fontSize: '1.4rem' }}>g</span>
             </div>
             <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '4px' }}>
-              X: {telemetry.accelX === 6.3 ? '6.3' : telemetry.accelX.toFixed(2)}g | Y: {telemetry.accelY.toFixed(2)}g | Z: {telemetry.accelZ.toFixed(2)}g
+              X: {telemetry.accelX.toFixed(2)}g | Y: {telemetry.accelY.toFixed(2)}g | Z: {telemetry.accelZ.toFixed(2)}g
             </div>
           </div>
           <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '3px', overflow: 'hidden', marginTop: '12px' }}>
