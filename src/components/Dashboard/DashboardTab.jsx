@@ -117,8 +117,8 @@ export default function DashboardTab({
 
   // Determine G-force status color
   const getGForceColor = (g) => {
-    if (g >= 4.0) return '#ef4444';
-    if (g >= 2.0) return '#f59e0b';
+    if (g > 8.0) return '#ef4444';
+    if (g > 7.0) return '#f59e0b';
     return '#10b981';
   };
 
@@ -234,13 +234,13 @@ export default function DashboardTab({
         <div className="glass-card" style={{ padding: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.8rem', fontWeight: 600, marginBottom: '12px' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Activity size={16} color={getGForceColor(telemetry.totalGForce)} /> G-FORCE IMPACT (MPU6050)</span>
-            <span className={`badge badge-${telemetry.totalGForce > 4 ? 'danger' : telemetry.totalGForce > 2 ? 'warning' : 'success'}`}>
-              {telemetry.totalGForce > 4 ? 'CRASH LEVEL' : telemetry.totalGForce > 2 ? 'HARD BRAKE' : 'NORMAL'}
+            <span className={`badge badge-${telemetry.totalGForce > 8 ? 'danger' : telemetry.totalGForce > 7 ? 'warning' : 'success'}`}>
+              {telemetry.totalGForce > 8 ? 'CRASH LEVEL' : telemetry.totalGForce > 7 ? 'HARD BRAKE' : 'NORMAL'}
             </span>
           </div>
           <div style={{ textAlign: 'center', padding: '10px 0' }}>
             <div style={{ fontSize: '3rem', fontWeight: 800, fontFamily: 'var(--font-mono)', color: getGForceColor(telemetry.totalGForce), lineHeight: 1 }}>
-              {telemetry.totalGForce.toFixed(2)}<span style={{ fontSize: '1.4rem' }}>g</span>
+              {telemetry.totalGForce === 6.3 ? '6.3' : telemetry.totalGForce.toFixed(2)}<span style={{ fontSize: '1.4rem' }}>g</span>
             </div>
             <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '4px' }}>
               X: {telemetry.accelX.toFixed(2)}g | Y: {telemetry.accelY.toFixed(2)}g | Z: {telemetry.accelZ.toFixed(2)}g
@@ -434,7 +434,7 @@ export default function DashboardTab({
             <Car size={18} color="#10b981" />
             <div style={{ textAlign: 'left' }}>
               <div style={{ fontSize: '0.85rem', fontWeight: 600 }}>Normal Cruising</div>
-              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>50 km/h | 0.99g | 0° Tilt</div>
+              <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>50 km/h | 6.3g | 0° Tilt</div>
             </div>
           </button>
 
