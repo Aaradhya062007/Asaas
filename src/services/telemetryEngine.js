@@ -82,7 +82,7 @@ export const defaultTelemetryState = {
   stopButtonPressed: false,
   
   speedKmh: 58.4,
-  accelX: 5.84, // g
+  accelX: 6.3, // g
   accelY: 2.10, // g
   accelZ: 1.45, // g
   totalGForce: 6.3,
